@@ -18,6 +18,8 @@ jobs:
   validate:
     name: Validate Repository
     runs-on: ubuntu-latest
+  env:
+    app_name: = Axion-app
 
     steps:
       - name: Checkout Source Code
@@ -28,9 +30,19 @@ jobs:
           echo "Repository: $GITHUB_REPOSITORY"
           echo "Branch: $GITHUB_REF_NAME"
           echo "Workflow started successfully"
+          
+      - name: Show information
+        run: |
+          echo "$GITHUB_REF"
+          echo "$GITHUB_SHA"
+          echo "$GITHUB_ACTOR"
 
       - name: Validate Execution
         run: |
           echo "Running validation..."
           test -d .git
           echo "Validation successful"
+          
+        -name:  Show application name
+        run:  |
+         echo "$app_name"
