@@ -27,7 +27,7 @@ jobs:
         run: |
           echo "Repository: $GITHUB_REPOSITORY"
           echo "Branch: $GITHUB_REF_NAME"
-          echo "Workflow started successfully"
+          echo "Workflow started successfull"
 
       - name: Validate Execution
         run: |
