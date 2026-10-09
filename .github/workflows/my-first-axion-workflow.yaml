@@ -1,4 +1,4 @@
-name: First GitHub Actions Workflow
+name: First GitHub Actions Workflowv2
 
 on:
   push:
@@ -68,14 +68,6 @@ jobs:
             --name "db-password" `
             --query value `
             --output tsv
-
-          if ($LASTEXITCODE -ne 0) {
-            throw "Unable to retrieve Key Vault secret"
-          }
-
-          if ([string]::IsNullOrWhiteSpace($secret)) {
-            throw "Key Vault returned an empty secret"
-          }
 
           Write-Output "::add-mask::$secret"
           "DB_PASSWORD=$secret" |
