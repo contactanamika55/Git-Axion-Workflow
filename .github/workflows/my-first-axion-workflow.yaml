@@ -44,7 +44,7 @@ jobs:
         run: |
           echo "KEYVAULT: $KEYVAULT"
           SECRET_VALUE=$(az keyvault secret show \
-            --vault-name "$KEYVAULT_NAME" \
+            --vault-name "$KEYVAULT" \
             --name "$SECRET_NAME" \
             --query value \
             --output tsv)
