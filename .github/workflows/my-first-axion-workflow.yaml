@@ -12,6 +12,7 @@ on:
   workflow_dispatch:
 env:
     app_name: Axion-app
+    REGION: ${{ vars.AZURE_REGION }}
 
 permissions:
   contents: read
@@ -48,6 +49,7 @@ jobs:
         run: |
            echo "$app_name"
       - name: Show Azure region
-env:
-    REGION: ${{ vars.AZURE_REGION }}
-    run: echo "$REGION"
+        run: |
+           echo "$AZURE_REGION"
+
+    
