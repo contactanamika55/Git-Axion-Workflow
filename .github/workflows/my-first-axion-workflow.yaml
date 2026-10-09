@@ -10,6 +10,8 @@ on:
       - main
 
   workflow_dispatch:
+env:
+    app_name: Axion-app
 
 permissions:
   contents: read
@@ -18,8 +20,7 @@ jobs:
   validate:
     name: Validate Repository
     runs-on: ubuntu-latest
-  env:
-    app_name: Axion-app
+  
 
     steps:
       - name: Checkout Source Code
