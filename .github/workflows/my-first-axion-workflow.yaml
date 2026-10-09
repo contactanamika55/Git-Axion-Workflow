@@ -50,6 +50,6 @@ jobs:
            echo "$app_name"
       - name: Show Azure region
         run: |
-           echo "$AZURE_REGION"
+           echo "$REGION"
 
     
