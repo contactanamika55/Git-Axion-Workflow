@@ -1,35 +1,40 @@
+iaq-gzeg-jxr
 
-name: My First CI Pipeline
+Minakshi Sharma
+6:32 PM
+name: First GitHub Actions Workflow
 
 on:
   push:
     branches:
       - main
+
+  pull_request:
+    branches:
+      - main
+
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  build:
-    name: Build and Test
+  validate:
+    name: Validate Repository
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source code
+      - name: Checkout Source Code
         uses: actions/checkout@v4
 
-      - name: Display message
-        run: echo "GitHub Actions pipeline started"
-
-      - name: Check runner
+      - name: Show Repository Information
         run: |
-          echo "Operating System:"
-          uname -s
-          echo "Current Directory:"
-          pwd
+          echo "Repository: $GITHUB_REPOSITORY"
+          echo "Branch: $GITHUB_REF_NAME"
+          echo "Workflow started successfully"
 
-      - name: Simulate test
+      - name: Validate Execution
         run: |
-          echo "Running tests..."
-          echo "All tests passed"
+          echo "Running validation..."
+          test -d .git
+          echo "Validation successful"
