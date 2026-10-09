@@ -28,6 +28,12 @@ jobs:
           echo "Repository: $GITHUB_REPOSITORY"
           echo "Branch: $GITHUB_REF_NAME"
           echo "Workflow started successfully"
+          
+      - name: Show information
+        run: |
+          echo "$GITHUB_REF"
+          echo "$GITHUB_SHA"
+          echo "$GITHUB_ACTOR"
 
       - name: Validate Execution
         run: |
