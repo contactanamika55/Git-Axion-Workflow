@@ -47,3 +47,7 @@ jobs:
       - name:  Show application name
         run: |
            echo "$app_name"
+      - name: Show Azure region
+env:
+    REGION: ${{ vars.AZURE_REGION }}
+    run: echo "$REGION"
