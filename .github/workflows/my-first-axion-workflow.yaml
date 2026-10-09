@@ -26,6 +26,13 @@ jobs:
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v4
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name:  verify azure login
+        run: |
+          az account show
 
       - name: Show Repository Information
         run: |
