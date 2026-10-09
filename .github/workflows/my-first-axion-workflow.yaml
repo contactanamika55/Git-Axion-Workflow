@@ -43,6 +43,6 @@ jobs:
           test -d .git
           echo "Validation successful"
           
-        -name:  Show application name
-        run:  |
-         echo "$app_name"
+      - name:  Show application name
+        run: |
+           echo "$app_name"
