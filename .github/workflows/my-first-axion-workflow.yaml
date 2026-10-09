@@ -66,8 +66,6 @@ jobs:
 
       - name: Retrieve Key Vault Secret
         run: |
-          echo "Retrieving secret from Key Vault..."
-          secret_value=$(az keyvault secret show --name my-secret --vault-name $KEYVAULT_NAME --query value -o tsv)
-          echo "Secret Value: $secret_value"
+          echo "KEYVAULT_NAME: $KEYVAULT_NAME"
 
     
