@@ -27,11 +27,13 @@ jobs:
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v4
+
       - name: Azure Login
         uses: azure/login@v1
         with:
           auth-type: SERVICE_PRINCIPAL
           creds: ${{ secrets.AZURE_CLIENT_SECRET }}
+
       - name:  verify azure login
         run: |
           az account show
@@ -57,23 +59,15 @@ jobs:
       - name:  Show application name
         run: |
            echo "$app_name"
+
       - name: Show Azure region
         run: |
            echo "$REGION"
 
       - name: Retrieve Key Vault Secret
         run: |
-          $secret = az keyvault secret show `
-            --vault-name $env:KEYVAULT_NAME `
-            --name "db-password" `
-            --query value `
-            --output tsv
-
-          Write-Output "::add-mask::$secret"
-          "DB_PASSWORD=$secret" |
-            Out-File -FilePath $env:GITHUB_ENV `
-              -Encoding utf8 -Append
-
-          Write-Output "Key Vault secret retrieved successfully"
+          echo "Retrieving secret from Key Vault..."
+          secret_value=$(az keyvault secret show --name my-secret --vault-name $KEYVAULT_NAME --query value -o tsv)
+          echo "Secret Value: $secret_value"
 
     
