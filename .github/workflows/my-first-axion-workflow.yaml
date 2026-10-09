@@ -30,7 +30,7 @@ jobs:
         uses: azure/login@v1
         with:
           auth-type: SERVICE_PRINCIPAL
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          creds: ${{ secrets.AZURE_CLIENT_SECRET }}
       - name:  verify azure login
         run: |
           az account show
