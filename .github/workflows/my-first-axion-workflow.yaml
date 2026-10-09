@@ -38,6 +38,19 @@ jobs:
         run: |
           az account show
 
+      - name: Retrieve Key Vault Secret
+        run: |
+          echo "KEYVAULT: $KEYVAULT"
+        SECRET_NAME: DB-PASSWORD
+        run: |
+          SECRET_VALUE=$(az keyvault secret show \
+            --vault-name "$KEYVAULT_NAME" \
+            --name "$SECRET_NAME" \
+            --query value \
+            --output tsv)
+          echo "::add-mask::$SECRET_VALUE"
+
+
       - name: Show Repository Information
         run: |
           echo "Repository: $GITHUB_REPOSITORY"
@@ -64,8 +77,6 @@ jobs:
         run: |
            echo "$REGION"
 
-      - name: Retrieve Key Vault Secret
-        run: |
-          echo "KEYVAULT: $KEYVAULT"
+
 
     
