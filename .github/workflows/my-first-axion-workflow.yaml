@@ -41,8 +41,7 @@ jobs:
       - name: Retrieve Key Vault Secret
         run: |
           echo "KEYVAULT: $KEYVAULT"
-        SECRET_NAME: DB-PASSWORD
-        run: |
+          
           SECRET_VALUE=$(az keyvault secret show \
             --vault-name "$KEYVAULT_NAME" \
             --name "$SECRET_NAME" \
