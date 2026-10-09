@@ -19,7 +19,7 @@ jobs:
     name: Validate Repository
     runs-on: ubuntu-latest
   env:
-    app_name: = Axion-app
+    app_name: Axion-app
 
     steps:
       - name: Checkout Source Code
