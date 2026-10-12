@@ -62,7 +62,7 @@ jobs:
           # Discover the enabled secret tagged for database password
           SECRET_NAME=$(az keyvault secret list \
             --vault-name "$KEYVAULT_NAME" \
-            --query "[?tags.purpose=='db-password' && attributes.enabled==\`true\`].name | [0]" \
+            --query "[?tags.purpose=='db-password' && attributes.enabled==\`true\`].name | [1]" \
             --output tsv)
 
           if [ -z "$SECRET_NAME" ] || [ "$SECRET_NAME" = "None" ]; then
@@ -89,6 +89,8 @@ jobs:
           printf 'DB_PASSWORD=%s\n' "$SECRET_VALUE" >> "$GITHUB_ENV"
 
           echo "Key Vault and secret fetched successfully."
+
+          
       - name: Show Repository Information
         run: |
           echo "Repository: $GITHUB_REPOSITORY"
