@@ -43,7 +43,7 @@ jobs:
       - name: Fetch Key Vault Information
         env:
           KEYVAULT_NAME: ${{ vars.KEYVAULT_NAME }}
-          SECRET_NAME: ${{ vars.SECRET_NAME }}
+          SECRET_NAME: pgadmin-password
         run: |
           set -euo pipefail
 
