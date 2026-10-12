@@ -41,24 +41,44 @@ jobs:
           az account show
 
       - name: Retrieve Key Vault Secret
-        run: |
-          echo "KEYVAULT: $KEYVAULT"
-          SECRET_VALUE=$(az keyvault secret show \
-            --vault-name "$KEYVAULT" \
-            --name "$SECRET_NAME" \
-            --query value \
-            --output tsv)
+    shell: bash
+    env:
+      KEYVAULT: ${{ vars.KEYVAULT_NAME }}
+      SECRET_NAME: ${{ vars.DB_PASSWORD_SECRET_NAME }}
+    run: |
+      set -euo pipefail
 
-          if [ -z "$SECRET_VALUE" ]; then
-            echo "Secret value is empty or unavailable"
-            exit 1
-          fi
+      if [[ -z "$KEYVAULT" || -z "$SECRET_NAME" ]]; then
+        echo "ERROR: Key Vault name or secret name is missing"
+        exit 1
+      fi
 
-          echo "::add-mask::$SECRET_VALUE"
-          echo "Secret fetched successfully"
+      echo "Checking Azure authentication..."
+      az account show --output none
 
-          # Use the secret here without printing it
-          export DB_PASSWORD="$SECRET_VALUE"
+      echo "Fetching secret from Azure Key Vault..."
+
+      if ! SECRET_VALUE=$(az keyvault secret show \
+        --vault-name "$KEYVAULT" \
+        --name "$SECRET_NAME" \
+        --query value \
+        --output tsv \
+        --only-show-errors); then
+        echo "ERROR: Unable to retrieve secret. Check permissions and names."
+        exit 1
+      fi
+
+      if [[ -z "$SECRET_VALUE" || "$SECRET_VALUE" == "None" ]]; then
+        echo "ERROR: Secret value is empty"
+        exit 1
+      fi
+
+      echo "::add-mask::$SECRET_VALUE"
+
+      # Make the secret available to subsequent steps
+      printf 'DB_PASSWORD=%s\n' "$SECRET_VALUE" >> "$GITHUB_ENV"
+
+      echo "Secret retrieved successfully"
 
 
       - name: Show Repository Information
