@@ -75,9 +75,7 @@ jobs:
           
 
           echo "$SECRET_VALUE"
-          printf 'DB_PASSWORD=%s\n' "$SECRET_VALUE" >> "$GITHUB_ENV"
-
-          echo "Key Vault and secret fetched successfully."
+          
 
           
       - name: Show Repository Information
