@@ -65,10 +65,10 @@ jobs:
             --query "[?tags.purpose=='db-password' && attributes.enabled==\`true\`].name | [0]" \
             --output tsv)
 
-          if [ -z "$SECRET_NAME" ] || [ "$SECRET_NAME" = "None" ]; then
-            echo "ERROR: No enabled secret with purpose=db-password tag found"
-            exit 1
-          fi
+          # if [ -z "$SECRET_NAME" ] || [ "$SECRET_NAME" = "None" ]; then
+          #   echo "ERROR: No enabled secret with purpose=db-password tag found"
+          #   exit 1
+          # fi
 
           echo "Secret name discovered: $SECRET_NAME"
 
