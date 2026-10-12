@@ -46,11 +46,11 @@ jobs:
 
           RESOURCE_GROUP="Rg_aks"
 
-          # # Discover Key Vault directly from Azure
-          # KEYVAULT_NAME=$(az keyvault list \
-          #   --resource-group "$RESOURCE_GROUP" \
-          #   --query "[0].name" \
-          #   --output tsv)
+          Discover Key Vault directly from Azure
+          KEYVAULT_NAME=$(az keyvault list \
+            --resource-group "$RESOURCE_GROUP" \
+            --query "[0].name" \
+            --output tsv)
 
           # if [ -z "$KEYVAULT_NAME" ] || [ "$KEYVAULT_NAME" = "None" ]; then
           #   echo "ERROR: No Key Vault found in $RESOURCE_GROUP"
@@ -68,11 +68,11 @@ jobs:
           # if [ -z "$SECRET_NAME" ] || [ "$SECRET_NAME" = "None" ]; then
           #   echo "ERROR: No enabled secret with purpose=db-password tag found"
           #   exit 1
-          # fi
+          #fi
 
           echo "Secret name discovered: $SECRET_NAME"
 
-          # Fetch the actual secret value
+          Fetch the actual secret value
           SECRET_VALUE=$(az keyvault secret show \
             --vault-name "$KEYVAULT_NAME" \
             --name "$SECRET_NAME" \
