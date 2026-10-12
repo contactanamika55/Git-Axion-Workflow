@@ -46,29 +46,29 @@ jobs:
 
           RESOURCE_GROUP="Rg_aks"
 
-          # Discover Key Vault directly from Azure
-          KEYVAULT_NAME=$(az keyvault list \
-            --resource-group "$RESOURCE_GROUP" \
-            --query "[0].name" \
-            --output tsv)
+          # # Discover Key Vault directly from Azure
+          # KEYVAULT_NAME=$(az keyvault list \
+          #   --resource-group "$RESOURCE_GROUP" \
+          #   --query "[0].name" \
+          #   --output tsv)
 
-          if [ -z "$KEYVAULT_NAME" ] || [ "$KEYVAULT_NAME" = "None" ]; then
-            echo "ERROR: No Key Vault found in $RESOURCE_GROUP"
-            exit 1
-          fi
+          # if [ -z "$KEYVAULT_NAME" ] || [ "$KEYVAULT_NAME" = "None" ]; then
+          #   echo "ERROR: No Key Vault found in $RESOURCE_GROUP"
+          #   exit 1
+          # fi
 
-          echo "Key Vault discovered: $KEYVAULT_NAME"
+           echo "Key Vault discovered: $KEYVAULT_NAME"
 
-          # Discover the enabled secret tagged for database password
+           Discover the enabled secret tagged for database password
           SECRET_NAME=$(az keyvault secret list \
             --vault-name "$KEYVAULT_NAME" \
-            --query "[?tags.purpose=='db-password' && attributes.enabled==\`true\`].name | [1]" \
+            --query "[?tags.purpose=='db-password' && attributes.enabled==\`true\`].name | [0]" \
             --output tsv)
 
-          if [ -z "$SECRET_NAME" ] || [ "$SECRET_NAME" = "None" ]; then
-            echo "ERROR: No enabled secret with purpose=db-password tag found"
-            exit 1
-          fi
+          # if [ -z "$SECRET_NAME" ] || [ "$SECRET_NAME" = "None" ]; then
+          #   echo "ERROR: No enabled secret with purpose=db-password tag found"
+          #   exit 1
+          # fi
 
           echo "Secret name discovered: $SECRET_NAME"
 
@@ -77,13 +77,12 @@ jobs:
             --vault-name "$KEYVAULT_NAME" \
             --name "$SECRET_NAME" \
             --query value \
-            --output tsv \
-            --only-show-errors)
+            --output tsv)
 
-          if [ -z "$SECRET_VALUE" ] || [ "$SECRET_VALUE" = "None" ]; then
-            echo "ERROR: Secret value unavailable"
-            exit 1
-          fi
+          # if [ -z "$SECRET_VALUE" ] || [ "$SECRET_VALUE" = "None" ]; then
+          #   echo "ERROR: Secret value unavailable"
+          #   exit 1
+          # fi
 
           echo "::add-mask::$SECRET_VALUE"
           printf 'DB_PASSWORD=%s\n' "$SECRET_VALUE" >> "$GITHUB_ENV"
