@@ -57,7 +57,7 @@ jobs:
             exit 1
           fi
 
-           echo "Key Vault discovered: $KEYVAULT_NAME"
+          echo "Key Vault discovered: $KEYVAULT_NAME"
 
            Discover the enabled secret tagged for database password
           SECRET_NAME=$(az keyvault secret list \
