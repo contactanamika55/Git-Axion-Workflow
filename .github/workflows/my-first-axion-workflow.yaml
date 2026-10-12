@@ -40,20 +40,39 @@ jobs:
         run: |
           az account show
 
-      - name: Fetch Key Vault Information
-        env:
-          KEYVAULT_NAME: ${{ vars.KEYVAULT_NAME }}
-          SECRET_NAME: pgadmin-password
+      - name: Discover Key Vault and Secret
         run: |
           set -euo pipefail
 
-          echo "Fetching Key Vault information..."
+          RESOURCE_GROUP="Rg_aks"
 
-          az keyvault show \
-            --name "$KEYVAULT_NAME" \
-            --query "{name:name, location:location, resourceGroup:resourceGroup}" \
-            --output table
+          # Discover Key Vault directly from Azure
+          KEYVAULT_NAME=$(az keyvault list \
+            --resource-group "$RESOURCE_GROUP" \
+            --query "[0].name" \
+            --output tsv)
 
+          if [ -z "$KEYVAULT_NAME" ] || [ "$KEYVAULT_NAME" = "None" ]; then
+            echo "ERROR: No Key Vault found in $RESOURCE_GROUP"
+            exit 1
+          fi
+
+          echo "Key Vault discovered: $KEYVAULT_NAME"
+
+          # Discover the enabled secret tagged for database password
+          SECRET_NAME=$(az keyvault secret list \
+            --vault-name "$KEYVAULT_NAME" \
+            --query "[?tags.purpose=='db-password' && attributes.enabled==\`true\`].name | [0]" \
+            --output tsv)
+
+          if [ -z "$SECRET_NAME" ] || [ "$SECRET_NAME" = "None" ]; then
+            echo "ERROR: No enabled secret with purpose=db-password tag found"
+            exit 1
+          fi
+
+          echo "Secret name discovered: $SECRET_NAME"
+
+          # Fetch the actual secret value
           SECRET_VALUE=$(az keyvault secret show \
             --vault-name "$KEYVAULT_NAME" \
             --name "$SECRET_NAME" \
@@ -62,16 +81,14 @@ jobs:
             --only-show-errors)
 
           if [ -z "$SECRET_VALUE" ] || [ "$SECRET_VALUE" = "None" ]; then
-            echo "ERROR: Secret value is empty or unavailable"
+            echo "ERROR: Secret value unavailable"
             exit 1
           fi
 
           echo "::add-mask::$SECRET_VALUE"
           printf 'DB_PASSWORD=%s\n' "$SECRET_VALUE" >> "$GITHUB_ENV"
 
-          echo "Key Vault information fetched successfully"
-          echo "Secret fetched successfully"
-
+          echo "Key Vault and secret fetched successfully."
       - name: Show Repository Information
         run: |
           echo "Repository: $GITHUB_REPOSITORY"
