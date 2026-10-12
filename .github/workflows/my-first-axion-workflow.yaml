@@ -42,8 +42,7 @@ jobs:
 
       - name: Discover Key Vault and Secret
         run: |
-          set -euo pipefail
-
+          
           RESOURCE_GROUP="Rg_aks"
 
       
