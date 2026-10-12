@@ -104,6 +104,14 @@ jobs:
         run: |
            echo "$REGION"
 
+# setup Env Variables
+    steps:
+      - name: Set environment variable
+        run: echo "APP_VERSION=1.2.0" >> "$GITHUB_ENV"
+
+      - name: Read environment variable
+        run: echo "Version is $APP_VERSION"
+
 
 
     
