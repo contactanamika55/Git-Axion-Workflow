@@ -74,8 +74,9 @@ jobs:
 
           
 
+          echo "::add-mask::$SECRET_VALUE"
           echo "$SECRET_VALUE"
-          
+
 
           
       - name: Show Repository Information
