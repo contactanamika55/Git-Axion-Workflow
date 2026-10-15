@@ -138,10 +138,6 @@ jobs:
 
 
 #Artifacts and caching
-
-
-name: Artifact Demo
-
 steps:
       - name: Create report
         run: |
