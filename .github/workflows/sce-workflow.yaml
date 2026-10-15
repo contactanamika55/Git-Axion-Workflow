@@ -1,0 +1,33 @@
+
+name: Artifact Demo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create report
+        run: |
+          mkdir -p output
+          echo "Build successful" > output/report.txt
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-report
+          path: output/report.txt
+
+  verify:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download report
+        uses: actions/download-artifact@v4
+        with:
+          name: build-report
+          path: downloaded
+
+      - name: Display report
+        run: cat downloaded/report.txt
