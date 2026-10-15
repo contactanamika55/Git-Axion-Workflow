@@ -119,6 +119,7 @@ jobs:
 
     outputs:
       image_tag: ${{ steps.meta.outputs.tag }}
+      echo "Image tag: ${{ needs.build.outputs.image_tag }}"
 
     steps:
       - name: Generate image tag
