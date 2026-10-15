@@ -149,11 +149,7 @@ steps:
         with:
           name: build-report
           path: output/report.txt
-
-verify:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
+steps:
       - name: Download report
         uses: actions/download-artifact@v4
         with:
