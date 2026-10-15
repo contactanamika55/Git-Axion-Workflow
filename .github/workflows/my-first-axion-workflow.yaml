@@ -112,6 +112,28 @@ jobs:
       - name: Read environment variable
         run: echo "Version is $APP_VERSION"
 
+#image build and push to jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    outputs:
+      image_tag: ${{ steps.meta.outputs.tag }}
+
+    steps:
+      - name: Generate image tag
+        id: meta
+        run: echo "tag=${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print image tag
+        env:
+          IMAGE_TAG: ${{ needs.build.outputs.image_tag }}
+        run: echo "Deploying image $IMAGE_TAG"    
 
 
     
