@@ -142,13 +142,7 @@ jobs:
 
 name: Artifact Demo
 
-on:
-  workflow_dispatch:
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
+steps:
       - name: Create report
         run: |
           mkdir -p output
@@ -160,7 +154,7 @@ jobs:
           name: build-report
           path: output/report.txt
 
-  verify:
+verify:
     needs: build
     runs-on: ubuntu-latest
     steps:
