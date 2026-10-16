@@ -1,0 +1,13 @@
+
+name: Application CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    uses: ./.github/workflows/reusable-build.yml
+    with:
+      node-version: "22"
